@@ -1,0 +1,12 @@
+export declare const generateOTP: (length?: number) => string;
+export declare const generateRandomString: (length?: number) => string;
+export declare const isValidEmail: (email: string) => boolean;
+export declare const isValidPhone: (phone: string) => boolean;
+export declare const formatCurrency: (amount: number, currency?: string) => string;
+export declare const calculateAge: (dateOfBirth: Date) => number;
+export declare const sanitizeFileName: (fileName: string) => string;
+export declare const getFileExtension: (fileName: string) => string;
+export declare const isValidFileType: (fileName: string, allowedTypes: string[]) => boolean;
+export declare const formatDate: (date: Date, format?: string) => string;
+export declare const parseDate: (dateString: string) => Date;
+//# sourceMappingURL=index.d.ts.map
