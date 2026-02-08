@@ -1,28 +1,23 @@
 import { Pool } from 'pg';
 import { createClient } from 'redis';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import { config } from './config';
 
 // PostgreSQL connection pool
 export const pool = new Pool({
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432'),
-  database: process.env.DB_NAME || 'labor_migration_platform',
-  user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'password',
-  max: 20,
+  host: config.database.host,
+  port: config.database.port,
+  database: config.database.name,
+  user: config.database.user,
+  password: config.database.password,
+  ssl: config.database.ssl ? { rejectUnauthorized: false } : false,
+  max: config.database.maxConnections,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 2000,
+  connectionTimeoutMillis: 5000,
 });
 
 // Redis client
 export const redisClient = createClient({
-  socket: {
-    host: process.env.REDIS_HOST || 'localhost',
-    port: parseInt(process.env.REDIS_PORT || '6379'),
-  },
-  password: process.env.REDIS_PASSWORD || undefined,
+  url: `redis://${config.redis.password ? `:${config.redis.password}@` : ''}${config.redis.host}:${config.redis.port}`,
 });
 
 export const connectDatabases = async (): Promise<void> => {
