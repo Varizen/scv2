@@ -1,29 +1,22 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.disconnectDatabases = exports.connectDatabases = exports.redisClient = exports.pool = void 0;
 const pg_1 = require("pg");
 const redis_1 = require("redis");
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
+const config_1 = require("./config");
 exports.pool = new pg_1.Pool({
-    host: process.env.DB_HOST || 'localhost',
-    port: parseInt(process.env.DB_PORT || '5432'),
-    database: process.env.DB_NAME || 'labor_migration_platform',
-    user: process.env.DB_USER || 'postgres',
-    password: process.env.DB_PASSWORD || 'password',
-    max: 20,
+    host: config_1.config.database.host,
+    port: config_1.config.database.port,
+    database: config_1.config.database.name,
+    user: config_1.config.database.user,
+    password: config_1.config.database.password,
+    ssl: config_1.config.database.ssl ? { rejectUnauthorized: false } : false,
+    max: config_1.config.database.maxConnections,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
+    connectionTimeoutMillis: 5000,
 });
 exports.redisClient = (0, redis_1.createClient)({
-    socket: {
-        host: process.env.REDIS_HOST || 'localhost',
-        port: parseInt(process.env.REDIS_PORT || '6379'),
-    },
-    password: process.env.REDIS_PASSWORD || undefined,
+    url: `redis://${config_1.config.redis.password ? `:${config_1.config.redis.password}@` : ''}${config_1.config.redis.host}:${config_1.config.redis.port}`,
 });
 const connectDatabases = async () => {
     try {

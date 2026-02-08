@@ -18,7 +18,7 @@ const pool = new pg_1.Pool({
 async function getAppliedMigrations() {
     try {
         const result = await pool.query('SELECT filename FROM migrations ORDER BY applied_at DESC');
-        return result.rows.map(row => row.filename);
+        return result.rows.map((row) => row.filename);
     }
     catch (error) {
         return [];
