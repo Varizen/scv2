@@ -13,7 +13,7 @@ services:
       - key: PORT
         value: 3000
       - key: DB_HOST
-        placeholder: "The host of your Neon/Supabase Postgres"
+        sync: false
       - key: DB_PORT
         value: 5432
       - key: DB_NAME
@@ -21,15 +21,15 @@ services:
       - key: DB_USER
         value: postgres
       - key: DB_PASSWORD
-        generateValue: false
+        sync: false
       - key: DB_SSL
         value: "true"
       - key: REDIS_HOST
-        placeholder: "The host of your Upstash Redis"
+        sync: false
       - key: REDIS_PORT
         value: 6379
       - key: REDIS_PASSWORD
-        generateValue: false
+        sync: false
       - key: REDIS_DB
         value: 0
       - key: JWT_SECRET
