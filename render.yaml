@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: skillconnect-backend
+    runtime: node
+    repo: https://github.com/Varizen/scv2
+    rootDir: backend
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: DB_HOST
+        placeholder: "The host of your Neon/Supabase Postgres"
+      - key: DB_PORT
+        value: 5432
+      - key: DB_NAME
+        value: neondb
+      - key: DB_USER
+        value: postgres
+      - key: DB_PASSWORD
+        generateValue: false
+      - key: DB_SSL
+        value: "true"
+      - key: REDIS_HOST
+        placeholder: "The host of your Upstash Redis"
+      - key: REDIS_PORT
+        value: 6379
+      - key: REDIS_PASSWORD
+        generateValue: false
+      - key: REDIS_DB
+        value: 0
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: https://skillconnect.my
