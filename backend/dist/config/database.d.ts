@@ -291,6 +291,8 @@ export declare const redisClient: import("@redis/client").RedisClientType<{
     };
 } & import("redis").RedisModules, import("redis").RedisFunctions, import("redis").RedisScripts>;
 export declare const connectDatabases: () => Promise<void>;
+export declare const isPostgresConnected: () => boolean;
+export declare const isRedisConnected: () => boolean;
 export declare const disconnectDatabases: () => Promise<void>;
 export default pool;
 //# sourceMappingURL=database.d.ts.map
