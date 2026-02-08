@@ -17,15 +17,11 @@ interface Migration {
 }
 
 async function getAppliedMigrations(): Promise<string[]> {
-  try {
-    const result = await pool.query(
-      'SELECT filename FROM migrations ORDER BY applied_at DESC'
-    );
-    return result.rows.map(row => row.filename);
-  } catch (error) {
-    // If migrations table doesn't exist, return empty array
-    return [];
-  }
+  return result.rows.map((row: any) => row.filename);
+} catch (error) {
+  // If migrations table doesn't exist, return empty array
+  return [];
+}
 }
 
 async function recordMigration(filename: string): Promise<void> {
@@ -47,7 +43,7 @@ async function createMigrationsTable(): Promise<void> {
 
 async function runMigration(migration: Migration): Promise<void> {
   console.log(`Running migration: ${migration.filename}`);
-  
+
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -71,7 +67,7 @@ async function loadMigrations(): Promise<Migration[]> {
     .sort(); // Sort to ensure consistent order
 
   const migrations: Migration[] = [];
-  
+
   for (const filename of files) {
     const filePath = path.join(migrationsDir, filename);
     const content = fs.readFileSync(filePath, 'utf8');
@@ -84,13 +80,13 @@ async function loadMigrations(): Promise<Migration[]> {
 async function runMigrations(): Promise<void> {
   try {
     console.log('🚀 Starting database migrations...');
-    
+
     // Create migrations table if it doesn't exist
     await createMigrationsTable();
-    
+
     const appliedMigrations = await getAppliedMigrations();
     const allMigrations = await loadMigrations();
-    
+
     const pendingMigrations = allMigrations.filter(
       migration => !appliedMigrations.includes(migration.filename)
     );
