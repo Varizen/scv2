@@ -2,20 +2,21 @@ services:
   - type: web
     name: skillconnect-backend
     runtime: node
-    repo: https://github.com/Varizen/scv2
+    plan: free
     rootDir: backend
     buildCommand: npm install && npm run build
     startCommand: npm start
+    preDeployCommand: npm run db:migrate
     healthCheckPath: /health
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 3000
+        value: "3000"
       - key: DB_HOST
         sync: false
       - key: DB_PORT
-        value: 5432
+        value: "5432"
       - key: DB_NAME
         value: neondb
       - key: DB_USER
@@ -27,11 +28,11 @@ services:
       - key: REDIS_HOST
         sync: false
       - key: REDIS_PORT
-        value: 6379
+        value: "6379"
       - key: REDIS_PASSWORD
         sync: false
       - key: REDIS_DB
-        value: 0
+        value: "0"
       - key: JWT_SECRET
         generateValue: true
       - key: JWT_REFRESH_SECRET
