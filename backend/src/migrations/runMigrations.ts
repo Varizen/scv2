@@ -17,11 +17,15 @@ interface Migration {
 }
 
 async function getAppliedMigrations(): Promise<string[]> {
-  return result.rows.map((row: any) => row.filename);
-} catch (error) {
-  // If migrations table doesn't exist, return empty array
-  return [];
-}
+  try {
+    const result = await pool.query(
+      'SELECT filename FROM migrations ORDER BY applied_at DESC'
+    );
+    return result.rows.map((row: any) => row.filename);
+  } catch (error) {
+    // If migrations table doesn't exist, return empty array
+    return [];
+  }
 }
 
 async function recordMigration(filename: string): Promise<void> {
